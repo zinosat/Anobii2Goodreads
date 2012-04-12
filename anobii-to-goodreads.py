@@ -74,36 +74,35 @@ class UnicodeWriter:
 			self.writerow(row)
 
 
-reader = UnicodeReader(open(anobii_file,"rb"))
+reader = UnicodeReader(open(anobii_file, "rb"))
 reader.next() # first line is column titles
 target = []
-target.append(["Title","Author","Additional Authors","ISBN","ISBN13","My Rating","Average Rating","Publisher","Binding","Year Published","Original Publication Year","Date Read","Date Added","Bookshelves","My Review","Spoiler","Private Notes","Recommended For","Recommended By"])
+
+target.append(["Title", "Author", "Additional Authors", "ISBN", "ISBN13", "My Rating", "Average Rating", "Publisher", "Binding", "Year Published", "Original Publication Year", "Date Read", "Date Added", "Bookshelves", "My Review", "Spoiler", "Private Notes", "Recommended For", "Recommended By"])
+
 # loading all in memory is not efficient, there's certainly a better way
 for l in reader:
-	isbn = l[0].replace("'","")
-	title = l[1] + ":" + l[2]
+	isbn = l[0].replace("'", "")
+	print isbn
+	
+	title = l[1]
+	subtitle = l[2] # Unused
 	author = l[3]
 	format = l[4]
-	pages = l[5]
+	pages = l[5] # Unused
 	publisher = l[6]
-	# expensive date conversion, but might come handy in future
-	pubdate = ""
-	#pd_tmp = l[7].replace("'","").split("-")
-	#if pd_tmp[0]:
-	#	pubdate = date(int(pd_tmp[0]),int(pd_tmp[1]),int(pd_tmp[2])).year 
+	pubdate = l[7] # Unused
 	privnote = l[8]
+	commentTitle = l[9]
 	comment = l[10]
 	status = l[11]
-	readdate = ""
-	if status[0:9] == "Finished:":
-		readdate = status[10:] # can't be bothered to reformat here
-	rating = l[12]
+	stars = l[12]
 	tags = l[13].replace(" ","-").replace("-/-"," ")
 	
-	tline = [title,author,"",isbn,"",rating,"",publisher,format,"",pubdate,readdate,"",tags, comment,"",privnote,"",""]
+	tline = [title, author, "", isbn, "", rating, "", publisher, format, "", pubdate, readdate, "", tags, comment, "", privnote, "", ""]
 	target.append(tline)
 
-writer = UnicodeWriter(open(goodreads_file,"wb"),dialect='excel',quoting=csv.QUOTE_NONNUMERIC)
+writer = UnicodeWriter(open(goodreads_file, "wb"), dialect='excel', quoting=csv.QUOTE_NONNUMERIC)
 writer.writerows(target)
 
 print "Done! saved output to " + goodreads_file
