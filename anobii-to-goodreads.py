@@ -125,9 +125,7 @@ for l in reader:
 	stars = l[12]
 	tags = l[13].replace(" ","-").replace("-/-"," ") # unused
 	
-	readdate = ""
-	
-	tline = [title, author, "", isbn, "", stars, "", publisher, format, pubyear, "", readdate, "", "", comment, "", "", "", ""]
+	tline = [title, author, "", "", isbn, stars, "", publisher, format, pubyear, "", readdate, "", "", comment, "", privnote, "", ""]
 	target.append(tline)
 
 writer = UnicodeWriter(open(goodreads_file, "wb"), dialect='excel', quoting=csv.QUOTE_NONNUMERIC)
