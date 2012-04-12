@@ -1,10 +1,10 @@
 # Customise these variables to define input and output
-anobii_file = "export.csv"
+anobii_file = "anobii.csv"
 goodreads_file = "import_to_goodreads.csv" 
 
 ####### do not change anything below this line
 
-from datetime import date
+from datetime import date, datetime
 import csv, codecs, cStringIO
 
 class UTF8Recoder:
@@ -82,24 +82,53 @@ target.append(["Title", "Author", "Additional Authors", "ISBN", "ISBN13", "My Ra
 
 # loading all in memory is not efficient, there's certainly a better way
 for l in reader:
-	isbn = l[0].replace("'", "")
-	print isbn
-	
+	isbn = l[0].replace('[', '').replace(']', '')
 	title = l[1]
 	subtitle = l[2] # Unused
 	author = l[3]
 	format = l[4]
 	pages = l[5] # Unused
 	publisher = l[6]
-	pubdate = l[7] # Unused
-	privnote = l[8]
-	commentTitle = l[9]
-	comment = l[10]
-	status = l[11]
-	stars = l[12]
-	tags = l[13].replace(" ","-").replace("-/-"," ")
 	
-	tline = [title, author, "", isbn, "", rating, "", publisher, format, "", pubdate, readdate, "", tags, comment, "", privnote, "", ""]
+	pubdate = l[7]
+	pubyear = ""
+	if pubdate:
+	    pubyear = pubdate[1:-1].split('-')[0]
+	
+	privnote = l[8] # Unused
+	commentTitle = l[9] # Unused
+	comment = l[10]
+	
+	
+	def convertdate(d):
+	    dt = datetime.strptime(d, "%b %d, %Y")
+	    # Goodreads takes US formatted dates without century (just as stupid as Anobii really)
+	    return dt.strftime("%m/%d/%y")
+	
+	# Fragile but it works
+	status = l[11]
+	readdate = ""
+	if "Finished" in status:
+	    if "on" in status:
+	        readdate = convertdate(status[12:])
+	    else:
+	        readdate = "1/1/12"
+	elif "Not Started" in status:
+	    pass
+	elif "Reading":
+	    pass
+	elif "Abandoned" in status:
+	    if "on" in status:
+	        readdate = convertdate(status[13:])
+	    else:
+	        readdate = "1/1/12"
+	
+	stars = l[12]
+	tags = l[13].replace(" ","-").replace("-/-"," ") # unused
+	
+	readdate = ""
+	
+	tline = [title, author, "", isbn, "", stars, "", publisher, format, pubyear, "", readdate, "", "", comment, "", "", "", ""]
 	target.append(tline)
 
 writer = UnicodeWriter(open(goodreads_file, "wb"), dialect='excel', quoting=csv.QUOTE_NONNUMERIC)
