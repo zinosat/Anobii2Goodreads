@@ -80,7 +80,6 @@ target = []
 
 target.append(["Title", "Author", "Additional Authors", "ISBN", "ISBN13", "My Rating", "Average Rating", "Publisher", "Binding", "Year Published", "Original Publication Year", "Date Read", "Date Added", "Bookshelves", "My Review", "Spoiler", "Private Notes", "Recommended For", "Recommended By"])
 
-# loading all in memory is not efficient, there's certainly a better way
 for l in reader:
 	isbn = l[0].replace('[', '').replace(']', '')
 	title = l[1]
