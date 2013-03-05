@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 # Customise these variables to define input and output
 anobii_file = "anobii.csv"
 goodreads_file = "import_to_goodreads.csv" 
