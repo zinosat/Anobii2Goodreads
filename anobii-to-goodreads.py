@@ -101,21 +101,29 @@ for l in reader:
 	
 	
 	def convertdate(d):
-	    dt = datetime.strptime(d, "%b %d, %Y")
-	    # Goodreads takes US formatted dates without century (just as stupid as Anobii really)
-	    return dt.strftime("%m/%d/%y")
+		if len(d) < len("Jan 1, 2000"):
+			if len(d) == 4:
+				# i.e. "2007" -> "Jan 1, 2007"
+				d = "Jan 1, " + d
+			else:
+				# i.e. "Mar 2009" -> "Mar 1, 2009"
+				d = d.replace(" ", " 1, ")
+				
+		dt = datetime.strptime(d, "%b %d, %Y")
+		# Goodreads takes US formatted dates without century (just as stupid as Anobii really)
+		return dt.strftime("%m/%d/%y")
 	
 	# Fragile but it works
 	status = l[11]
 	readdate = ""
-	if "Finished" in status:
-	    if "on" in status:
-	        readdate = convertdate(status[12:])
+	if "Finito" in status:
+	    if "il" in status:
+		readdate = convertdate(status[len("Finito il "):])
 	    else:
 	        readdate = "1/1/12"
-	elif "Not Started" in status:
+	elif "Non iniziato" in status:
 	    pass
-	elif "Reading":
+	elif "In lettura":
 	    pass
 	elif "Abandoned" in status:
 	    if "on" in status:
