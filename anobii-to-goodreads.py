@@ -78,7 +78,7 @@ reader = UnicodeReader(open(anobii_file, "rb"))
 reader.next() # first line is column titles
 target = []
 
-target.append(["Title", "Author", "Additional Authors", "ISBN", "ISBN13", "My Rating", "Average Rating", "Publisher", "Binding", "Year Published", "Original Publication Year", "Date Read", "Date Added", "Bookshelves", "My Review", "Spoiler", "Private Notes", "Recommended For", "Recommended By"])
+target.append(["Title", "Author", "ISBN", "My Rating", "Average Rating", "Publisher", "Binding", "Year Published", "Original Publication Year", "Date Read", "Date Added", "Bookshelves", "My Review"])
 
 for l in reader:
 	isbn = l[0].replace('[', '').replace(']', '')
@@ -125,7 +125,7 @@ for l in reader:
 	stars = l[12]
 	tags = l[13].replace(" ","-").replace("-/-"," ") # unused
 	
-	tline = [title, author, "", "", isbn, stars, "", publisher, format, pubyear, "", readdate, "", "", comment, "", privnote, "", ""]
+	tline = [title, author, isbn, stars, "", publisher, format, pubyear, "", readdate, "", "", comment]
 	target.append(tline)
 
 writer = UnicodeWriter(open(goodreads_file, "wb"), dialect='excel', quoting=csv.QUOTE_NONNUMERIC)
