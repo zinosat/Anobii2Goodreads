@@ -77,6 +77,7 @@ class UnicodeWriter:
 reader = UnicodeReader(open(anobii_file, "rb"))
 reader.next() # first line is column titles
 target = []
+missing_isbn = []
 
 target.append(["Title", "Author", "ISBN", "My Rating", "Average Rating", "Publisher", "Binding", "Year Published", "Original Publication Year", "Date Read", "Date Added", "Bookshelves", "My Review"])
 
@@ -128,7 +129,14 @@ for l in reader:
 	tline = [title, author, isbn, stars, "", publisher, format, pubyear, "", readdate, "", "", comment]
 	target.append(tline)
 
+	if isbn == "":
+		missing_isbn.append(title + " - " + author)
+
 writer = UnicodeWriter(open(goodreads_file, "wb"), dialect='excel', quoting=csv.QUOTE_NONNUMERIC)
 writer.writerows(target)
 
 print "Done! saved output to " + goodreads_file
+
+if len(missing_isbn) > 0:
+	print "\nThe following %s" % len(missing_isbn), "books will not imported because of missing ISBN:"
+	print "\n".join(missing_isbn)
