@@ -113,7 +113,7 @@ for l in reader:
 				
 		dt = datetime.strptime(d, "%b %d, %Y")
 		# Goodreads takes US formatted dates without century (just as stupid as Anobii really)
-		return dt.strftime("%m/%d/%y")
+		return dt.strftime("%y/%m/%d")
 	
 	# Fragile but it works
 	status = l[11]
@@ -122,7 +122,7 @@ for l in reader:
 	    if "il" in status:
 		readdate = convertdate(status[len("Finito il "):])
 	    else:
-	        readdate = "1/1/12"
+	        readdate = "12/1/1"
 	elif "Non iniziato" in status:
 	    pass
 	elif "In lettura":
@@ -131,7 +131,7 @@ for l in reader:
 	    if "on" in status:
 	        readdate = convertdate(status[13:])
 	    else:
-	        readdate = "1/1/12"
+	        readdate = "12/1/1"
 	
 	stars = l[12]
 	tags = l[13].replace(" ","-").replace("-/-"," ") # unused
