@@ -1,6 +1,12 @@
-This script converts a standard CSV export from the Anobii website to a format you should be able to import into Goodreads.
+This is another fork of Anobii2Goodreads meant to work with Italian
+CSV exports.
 
-I have not written this script myself but just adapted it a bit so it works again. I've put it on Github since i think it might prove useful to more people than just me. 
+This script converts a standard CSV export from the Anobii website to
+a format you should be able to import into Goodreads.
+
+I have not written this script myself but just adapted it a bit so it
+works again. I've put it on Github since i think it might prove useful
+to more people than just me.
 
 You'll find the original by Giacomo Lacava here:
 
